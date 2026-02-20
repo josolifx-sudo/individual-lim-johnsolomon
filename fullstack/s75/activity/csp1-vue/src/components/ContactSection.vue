@@ -133,20 +133,198 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section id="contact">
-    <form @submit.prevent="submitForm">
-      <input v-model="name" type="text" name="name" placeholder="Name" required />
-      <input v-model="email" type="email" name="email" placeholder="Email" required />
-      <textarea v-model="message" name="message" placeholder="Message" required />
+  <section id="contact" class="contact">
+    <div class="contactWrap">
+      <div class="contactHeader">
+        <h2 class="contactTitle">Contact</h2>
+        <p class="contactSubtitle">Send me a message and I will get back to you.</p>
+      </div>
 
-      <!-- reCAPTCHA v2 checkbox will render here -->
-      <div ref="captchaEl"></div>
+      <div class="contactCard">
+        <form class="contactForm" @submit.prevent="submitForm">
+          <div class="formGrid">
+            <div class="field">
+              <label class="label" for="contact-name">Name</label>
+              <input
+                id="contact-name"
+                v-model="name"
+                type="text"
+                name="name"
+                class="input"
+                placeholder="Your name"
+                required
+              />
+            </div>
 
-      <button type="submit" :disabled="isSubmitting">
-        {{ isSubmitting ? "Sending..." : "Send" }}
-      </button>
+            <div class="field">
+              <label class="label" for="contact-email">Email</label>
+              <input
+                id="contact-email"
+                v-model="email"
+                type="email"
+                name="email"
+                class="input"
+                placeholder="you@email.com"
+                required
+              />
+            </div>
 
-      <p v-if="status">{{ status }}</p>
-    </form>
+            <div class="field fieldFull">
+              <label class="label" for="contact-message">Message</label>
+              <textarea
+                id="contact-message"
+                v-model="message"
+                name="message"
+                class="textarea"
+                placeholder="Write your message here"
+                required
+              />
+            </div>
+
+            <div class="field fieldFull">
+              <div class="recaptchaRow">
+                <div class="recaptchaBox">
+                  <div ref="captchaEl"></div>
+                </div>
+
+                <button class="btn" type="submit" :disabled="isSubmitting">
+                  {{ isSubmitting ? "Sending..." : "Send Message" }}
+                </button>
+              </div>
+
+              <p v-if="status" class="status">{{ status }}</p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </section>
 </template>
+
+<style scoped>
+.contact {
+  padding: 90px 16px;
+}
+
+.contactWrap {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.contactHeader {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.contactTitle {
+  font-size: 40px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.contactSubtitle {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+}
+
+.contactCard {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  padding: 22px;
+}
+
+.contactForm {
+  width: 100%;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 8px;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  padding: 12px 14px;
+  outline: none;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: rgba(150, 160, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(120, 130, 255, 0.18);
+}
+
+.recaptchaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.recaptchaBox {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.btn {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(130, 140, 255, 0.20);
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status {
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.80);
+  font-size: 13px;
+}
+
+@media (max-width: 820px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
