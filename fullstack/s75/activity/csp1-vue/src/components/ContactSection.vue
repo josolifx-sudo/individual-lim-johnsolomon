@@ -15,37 +15,6 @@ const recaptchaToken = ref("");
 const widgetId = ref(null);
 const captchaEl = ref(null);
 
-function loadRecaptchaScript() {
-  return new Promise((resolve, reject) => {
-    if (window.grecaptcha) return resolve();
-
-    const script = document.createElement("script");
-    script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
-    script.async = true;
-    script.defer = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Failed to load reCAPTCHA"));
-    document.head.appendChild(script);
-  });
-}
-
-function renderCaptcha() {
-  if (!window.grecaptcha || !captchaEl.value) return;
-
-  widgetId.value = window.grecaptcha.render(captchaEl.value, {
-    sitekey: siteKey,
-    callback: (token) => {
-      recaptchaToken.value = token;
-    },
-    "expired-callback": () => {
-      recaptchaToken.value = "";
-    },
-    "error-callback": () => {
-      recaptchaToken.value = "";
-    }
-  });
-}
-
 function resetCaptcha() {
   if (window.grecaptcha && widgetId.value !== null) {
     window.grecaptcha.reset(widgetId.value);
@@ -53,18 +22,37 @@ function resetCaptcha() {
   recaptchaToken.value = "";
 }
 
-onMounted(async () => {
-  if (!siteKey) {
-    console.warn("Missing VITE_RECAPTCHA_SITE_KEY");
-    return;
-  }
-  await loadRecaptchaScript();
-  renderCaptcha();
-});
+function renderCaptcha() {
+  if (!window.grecaptcha || !captchaEl.value) return;
 
-onBeforeUnmount(() => {
-  // optional cleanup, grecaptcha has no official destroy API
-});
+  widgetId.value = window.grecaptcha.render(captchaEl.value, {
+    sitekey: siteKey,
+    callback: (token) => (recaptchaToken.value = token),
+    "expired-callback": () => (recaptchaToken.value = ""),
+    "error-callback": () => (recaptchaToken.value = "")
+  });
+}
+
+function loadRecaptchaV2() {
+  return new Promise((resolve, reject) => {
+    // if already loaded and has render, we’re good
+    if (window.grecaptcha?.render) return resolve();
+
+    // define the global callback that Google will call
+    window.onRecaptchaLoad = () => resolve();
+
+    // avoid injecting twice
+    if (document.querySelector('script[data-recaptcha="v2"]')) return;
+
+    const script = document.createElement("script");
+    script.dataset.recaptcha = "v2";
+    script.src = "https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit";
+    script.async = true;
+    script.defer = true;
+    script.onerror = () => reject(new Error("Failed to load reCAPTCHA v2 script"));
+    document.head.appendChild(script);
+  });
+}
 
 async function verifyCaptchaServerSide() {
   const res = await fetch("/api/verify-recaptcha", {
@@ -72,7 +60,6 @@ async function verifyCaptchaServerSide() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ token: recaptchaToken.value })
   });
-
   const data = await res.json();
   return !!data.success;
 }
@@ -121,13 +108,28 @@ async function submitForm() {
     }
 
     resetCaptcha();
-  } catch (err) {
+  } catch (e) {
     status.value = "Something went wrong.";
     resetCaptcha();
   } finally {
     isSubmitting.value = false;
   }
 }
+
+onMounted(async () => {
+  if (!siteKey) {
+    console.warn("Missing VITE_RECAPTCHA_SITE_KEY");
+    return;
+  }
+
+  await loadRecaptchaV2();
+  renderCaptcha();
+});
+
+onBeforeUnmount(() => {
+  // cleanup global callback reference (optional)
+  if (window.onRecaptchaLoad) delete window.onRecaptchaLoad;
+});
 </script>
 
 <template>
@@ -137,7 +139,7 @@ async function submitForm() {
       <input v-model="email" type="email" name="email" placeholder="Email" required />
       <textarea v-model="message" name="message" placeholder="Message" required />
 
-      <!-- reCAPTCHA checkbox -->
+      <!-- reCAPTCHA v2 checkbox will render here -->
       <div ref="captchaEl"></div>
 
       <button type="submit" :disabled="isSubmitting">
