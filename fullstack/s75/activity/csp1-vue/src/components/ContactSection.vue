@@ -1,149 +1,150 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const fullName = ref('')
-const email = ref('')
-const subject = ref('')
-const message = ref('')
+const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
-const isSending = ref(false)
-const status = ref({ type: '', text: '' })
+const name = ref("");
+const email = ref("");
+const message = ref("");
 
-const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY
+const status = ref("");
+const isSubmitting = ref(false);
 
-async function handleSubmit() {
-  status.value = { type: '', text: '' }
+const recaptchaToken = ref("");
+const widgetId = ref(null);
+const captchaEl = ref(null);
 
-  if (!accessKey) {
-    status.value = {
-      type: 'danger',
-      text: 'Missing Web3Forms access key. Add VITE_WEB3FORMS_ACCESS_KEY in your .env file.',
+function loadRecaptchaScript() {
+  return new Promise((resolve, reject) => {
+    if (window.grecaptcha) return resolve();
+
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Failed to load reCAPTCHA"));
+    document.head.appendChild(script);
+  });
+}
+
+function renderCaptcha() {
+  if (!window.grecaptcha || !captchaEl.value) return;
+
+  widgetId.value = window.grecaptcha.render(captchaEl.value, {
+    sitekey: siteKey,
+    callback: (token) => {
+      recaptchaToken.value = token;
+    },
+    "expired-callback": () => {
+      recaptchaToken.value = "";
+    },
+    "error-callback": () => {
+      recaptchaToken.value = "";
     }
-    return
-  }
+  });
+}
 
-  isSending.value = true
+function resetCaptcha() {
+  if (window.grecaptcha && widgetId.value !== null) {
+    window.grecaptcha.reset(widgetId.value);
+  }
+  recaptchaToken.value = "";
+}
+
+onMounted(async () => {
+  if (!siteKey) {
+    console.warn("Missing VITE_RECAPTCHA_SITE_KEY");
+    return;
+  }
+  await loadRecaptchaScript();
+  renderCaptcha();
+});
+
+onBeforeUnmount(() => {
+  // optional cleanup, grecaptcha has no official destroy API
+});
+
+async function verifyCaptchaServerSide() {
+  const res = await fetch("/api/verify-recaptcha", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: recaptchaToken.value })
+  });
+
+  const data = await res.json();
+  return !!data.success;
+}
+
+async function submitForm() {
+  status.value = "";
+  isSubmitting.value = true;
 
   try {
+    if (!recaptchaToken.value) {
+      status.value = "Please complete the reCAPTCHA checkbox.";
+      isSubmitting.value = false;
+      return;
+    }
+
+    const verified = await verifyCaptchaServerSide();
+    if (!verified) {
+      status.value = "reCAPTCHA verification failed. Please try again.";
+      resetCaptcha();
+      isSubmitting.value = false;
+      return;
+    }
+
     const payload = {
       access_key: accessKey,
-      name: fullName.value,
+      name: name.value,
       email: email.value,
-      subject: subject.value,
-      message: message.value,
-    }
+      message: message.value
+    };
 
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-    const data = await res.json()
+    const data = await res.json();
 
-    if (data?.success) {
-      status.value = { type: 'success', text: 'Message sent. Thank you!' }
-      fullName.value = ''
-      email.value = ''
-      subject.value = ''
-      message.value = ''
+    if (res.ok) {
+      status.value = data.message || "Message sent.";
+      name.value = "";
+      email.value = "";
+      message.value = "";
     } else {
-      status.value = { type: 'danger', text: data?.message || 'Failed to send message.' }
+      status.value = data.message || "Submission failed.";
     }
+
+    resetCaptcha();
   } catch (err) {
-    status.value = { type: 'danger', text: 'Network error. Please try again.' }
+    status.value = "Something went wrong.";
+    resetCaptcha();
   } finally {
-    isSending.value = false
+    isSubmitting.value = false;
   }
 }
 </script>
 
 <template>
-  <section id="contact" class="sectionPad">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 col-lg-8">
-          <div class="sectionHeader text-center mb-4">
-            <h2 class="sectionTitle mb-2">Contact</h2>
-            <p class="sectionSubtitle mb-0">Send me a message using the form below.</p>
-          </div>
+  <section id="contact">
+    <form @submit.prevent="submitForm">
+      <input v-model="name" type="text" name="name" placeholder="Name" required />
+      <input v-model="email" type="email" name="email" placeholder="Email" required />
+      <textarea v-model="message" name="message" placeholder="Message" required />
 
-          <div class="card appCard">
-            <div class="card-body">
-              <form @submit.prevent="handleSubmit">
-                <div class="row g-3">
-                  <div class="col-12 col-md-6">
-                    <label for="fullName" class="form-label appLabel">Full Name</label>
-                    <input
-                      id="fullName"
-                      v-model.trim="fullName"
-                      type="text"
-                      class="form-control appInput"
-                      name="fullName"
-                      required
-                      autocomplete="name"
-                    />
-                  </div>
+      <!-- reCAPTCHA checkbox -->
+      <div ref="captchaEl"></div>
 
-                  <div class="col-12 col-md-6">
-                    <label for="email" class="form-label appLabel">Email</label>
-                    <input
-                      id="email"
-                      v-model.trim="email"
-                      type="email"
-                      class="form-control appInput"
-                      name="email"
-                      required
-                      autocomplete="email"
-                    />
-                  </div>
+      <button type="submit" :disabled="isSubmitting">
+        {{ isSubmitting ? "Sending..." : "Send" }}
+      </button>
 
-                  <div class="col-12">
-                    <label for="subject" class="form-label appLabel">Subject</label>
-                    <input
-                      id="subject"
-                      v-model.trim="subject"
-                      type="text"
-                      class="form-control appInput"
-                      name="subject"
-                      required
-                    />
-                  </div>
-
-                  <div class="col-12">
-                    <label for="message" class="form-label appLabel">Message</label>
-                    <textarea
-                      id="message"
-                      v-model.trim="message"
-                      class="form-control appInput"
-                      name="message"
-                      rows="6"
-                      required
-                    ></textarea>
-                  </div>
-
-                  <div v-if="status.text" class="col-12">
-                    <div class="alert mb-0" :class="`alert-${status.type}`" role="alert">
-                      {{ status.text }}
-                    </div>
-                  </div>
-
-                  <div class="col-12">
-                    <button class="btn appBtnPrimary w-100" type="submit" :disabled="isSending">
-                      <span v-if="isSending">Sending...</span>
-                      <span v-else>Send Message</span>
-                    </button>
-                  </div>
-                </div>
-              </form>
-
-              <p class="text-muted small mt-3 mb-0">
-                Powered by Web3Forms.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <p v-if="status">{{ status }}</p>
+    </form>
   </section>
 </template>
