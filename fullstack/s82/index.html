@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ShuttleStudy | Badminton Resource Hub</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Top Reading Progress Bar -->
+    <div class="top-progress" aria-hidden="true">
+      <div id="topProgressBar" class="top-progress-bar"></div>
+    </div>
+
+    <!-- Navbar (Requirement: class "navbar") -->
+    <nav class="navbar navbar-expand-lg navbar-dark nav-glass sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#home">
+          <span class="brand-dot" aria-hidden="true"></span>
+          ShuttleStudy
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNav"
+          aria-controls="mainNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+            <li class="nav-item">
+              <a class="nav-link" href="#introduction">Introduction</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#featured">Featured</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#categories-section">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a class="btn btn-accent btn-sm px-3" href="#resources">Start Learning</a>
+            </li>
+
+            <!-- Dark Mode Toggle -->
+            <li class="nav-item ms-lg-2">
+              <button
+                id="themeToggle"
+                class="btn btn-outline-light btn-sm px-3"
+                type="button"
+                aria-label="Toggle dark mode"
+              >
+                Dark Mode
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Home Section (Requirement: id "home") -->
+    <header id="home" class="hero">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <div class="badge-soft mb-3">
+              Student Friendly • Clear Skills Path • Modern UI
+            </div>
+            <h1 class="display-5 fw-bold text-white mb-3">
+              Learn Badminton Faster With A Clean Resource Hub
+            </h1>
+            <p class="lead text-white-50 mb-4">
+              Explore fundamentals, footwork, strategy, and training plans. Everything is organized so you can
+              study, practice, and improve with confidence.
+            </p>
+
+            <div class="d-flex flex-wrap gap-2">
+              <a class="btn btn-accent px-4" href="#categories-section">Browse Categories</a>
+              <a class="btn btn-outline-light px-4" href="#mission">Why This Hub</a>
+            </div>
+
+            <div class="mt-4 d-flex flex-wrap gap-2">
+              <div class="mini-stat">
+                <div class="mini-stat-title">Focus</div>
+                <div class="mini-stat-value">Technique + Game IQ</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-title">Designed For</div>
+                <div class="mini-stat-value">Students + Beginners</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-title">Practice Style</div>
+                <div class="mini-stat-value">Short Drills</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="hero-card">
+              <h2 class="h5 fw-semibold mb-3">Quick Start Checklist</h2>
+              <ul class="checklist mb-0">
+                <li>Warm up 6 to 8 minutes</li>
+                <li>Footwork shadow 5 minutes</li>
+                <li>One stroke focus for the day</li>
+                <li>Play one controlled game</li>
+                <li>Write 2 improvements</li>
+              </ul>
+              <div class="mt-3 small text-muted">
+                Tip: Consistency beats intensity. Train a little, often.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Introduction (Requirement: id "introduction") -->
+      <section id="introduction" class="section-pad">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Introduction</h2>
+              <p class="section-subtitle">
+                This hub helps you learn badminton in a structured way, from basic grips to match strategy.
+              </p>
+            </div>            
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+              <div class="card soft-card h-100">
+                <div class="card-body">
+                  <div class="icon-pill bg-blue-soft">
+                    <span class="icon">🎯</span>
+                  </div>
+                  <h3 class="h5 mt-3">Clear Learning Path</h3>
+                  <p class="text-muted mb-0">
+                    Learn in layers: fundamentals first, then footwork, then tactics, then conditioning.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <div class="card soft-card h-100">
+                <div class="card-body">
+                  <div class="icon-pill bg-teal-soft">
+                    <span class="icon">🧠</span>
+                  </div>
+                  <h3 class="h5 mt-3">Student Friendly Guides</h3>
+                  <p class="text-muted mb-0">
+                    Short explanations, simple drills, and reminders so you can practice without confusion.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <div class="card soft-card h-100">
+                <div class="card-body">
+                  <div class="icon-pill bg-amber-soft">
+                    <span class="icon">⚡</span>
+                  </div>
+                  <h3 class="h5 mt-3">Fast Practical Progress</h3>
+                  <p class="text-muted mb-0">
+                    You focus on one skill at a time, so improvement is visible week by week.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 callout">
+            <div class="callout-title">How to use this page</div>
+            <div class="callout-text">
+              Start with Featured, then browse Categories, then pick a drill set from Sample Resources.
+              Use the search to quickly find topics like serve, smash, or footwork.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured (Requirement: id "featured") -->
+      <section id="featured" class="section-pad section-alt">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Featured</h2>
+              <p class="section-subtitle">
+                High impact lessons that improve your game quickly.
+              </p>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap">
+              <div class="search-wrap">
+                <label for="searchInput" class="visually-hidden">Search resources</label>
+                <input
+                  id="searchInput"
+                  type="text"
+                  class="form-control"
+                  placeholder="Search: serve, footwork, smash, defense..."
+                />
+              </div>
+              <select id="levelFilter" class="form-select filter-select" aria-label="Filter by level">
+                <option value="all" selected>All levels</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-4" id="featuredGrid">
+            <!-- JS injects cards here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Categories Section (Requirement: id "categories-section") -->
+      <section id="categories-section" class="section-pad">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Categories</h2>
+              <p class="section-subtitle">
+                Pick a category that matches what you want to improve today.
+              </p>
+            </div>            
+          </div>
+
+          <!-- Category listings (Requirement: id "categories") -->
+          <div id="categories" class="row g-4">
+            <div class="col-md-6 col-lg-3">
+              <a class="cat-card cat-blue" href="#resources">
+                <div class="cat-title">Fundamentals</div>
+                <div class="cat-desc">Grip, stance, ready position</div>
+              </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <a class="cat-card cat-teal" href="#resources">
+                <div class="cat-title">Footwork</div>
+                <div class="cat-desc">Split step, corners, recovery</div>
+              </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <a class="cat-card cat-amber" href="#resources">
+                <div class="cat-title">Strokes</div>
+                <div class="cat-desc">Clear, drop, smash, drive</div>
+              </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <a class="cat-card cat-purple" href="#resources">
+                <div class="cat-title">Game IQ</div>
+                <div class="cat-desc">Positioning, tactics, mindset</div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Sample resources (Requirement: id "resources") -->
+          <div id="resources" class="mt-5">
+            <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
+              <div>
+                <h3 class="h4 mb-1">Sample Resources</h3>
+                <p class="text-muted mb-0">
+                  These are student friendly practice plans you can follow right away.
+                </p>
+              </div>
+              <button id="resetBtn" class="btn btn-outline-secondary btn-sm">Reset filters</button>
+            </div>
+
+            <div class="row g-4" id="resourceGrid">
+              <!-- JS injects cards here -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section (Requirement: id "about") -->
+      <section id="about" class="section-pad section-alt">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">About</h2>
+              <p class="section-subtitle">
+                Why this hub exists and how to reach the team.
+              </p>
+            </div>
+          </div>
+
+          <div class="row g-4">
+            <!-- Mission statement (Requirement: id "mission") -->
+            <div class="col-lg-7">
+              <div id="mission" class="card soft-card h-100">
+                <div class="card-body">
+                  <h3 class="h5">Mission Statement</h3>
+                  <p class="text-muted">
+                    ShuttleStudy is built to help students learn badminton with structure. We use short lessons,
+                    simple drills, and a calm visual design. The goal is to reduce overwhelm, increase focus,
+                    and make practice feel achievable.
+                  </p>
+
+                  <div class="mission-points">
+                    <div class="mp">
+                      <div class="mp-badge mp-blue">Clarity</div>
+                      <div class="mp-text">Readable layout, predictable sections, clear headings</div>
+                    </div>
+                    <div class="mp">
+                      <div class="mp-badge mp-teal">Confidence</div>
+                      <div class="mp-text">Small wins through short drills and weekly targets</div>
+                    </div>
+                    <div class="mp">
+                      <div class="mp-badge mp-amber">Energy</div>
+                      <div class="mp-text">Accent colors highlight actions without straining the eyes</div>
+                    </div>
+                  </div>                 
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact information (Requirement: id "contact") -->
+            <div class="col-lg-5">
+              <div id="contact" class="card soft-card h-100">
+                <div class="card-body">
+                  <h3 class="h5">Contact Information</h3>
+                  <p class="text-muted mb-3">
+                    Need a topic added like doubles rotation or backhand clear? Send a message.
+                  </p>
+
+                  <div class="contact-box">
+                    <div class="contact-row">
+                      <div class="contact-label">Email</div>
+                      <div class="contact-value">solomon@mail.com</div>
+                    </div>
+                    <div class="contact-row">
+                      <div class="contact-label">Hours</div>
+                      <div class="contact-value">Monday to Friday, 8:00 AM to 5:00 PM</div>
+                    </div>
+                    <div class="contact-row">
+                      <div class="contact-label">Location</div>
+                      <div class="contact-value">Online resource hub</div>
+                    </div>
+                  </div>
+
+                  <hr class="my-4" />
+
+                  <form id="contactForm" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Your name</label>
+                      <input id="name" class="form-control" type="text" required />
+                      <div class="invalid-feedback">Please enter your name.</div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="message" class="form-label">Message</label>
+                      <textarea id="message" class="form-control" rows="4" required></textarea>
+                      <div class="invalid-feedback">Please write a short message.</div>
+                    </div>
+
+                    <button class="btn btn-accent w-100" type="submit">Send message</button>
+                    <div id="formStatus" class="small mt-2 text-muted" role="status" aria-live="polite"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div class="text-muted small">
+          © <span id="year"></span> ShuttleStudy. All rights reserved.
+        </div>
+        <div class="d-flex gap-3 small">
+          <a class="footer-link" href="#home">Back to top</a>
+          <a class="footer-link" href="#categories-section">Categories</a>
+          <a class="footer-link" href="#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Floating Button -->
+    <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+      <span class="btt-ring" aria-hidden="true"></span>
+      <span class="btt-arrow" aria-hidden="true">↑</span>
+    </button>
+
+    <!-- Resource Details Modal -->
+    <div
+      class="modal fade"
+      id="resourceModal"
+      tabindex="-1"
+      aria-labelledby="resourceModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-surface">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold" id="resourceModalLabel">Resource</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span id="modalLevel" class="tag"></span>
+              <span id="modalMeta1" class="meta-pill"></span>
+              <span id="modalMeta2" class="meta-pill"></span>
+            </div>
+
+            <p id="modalDesc" class="text-muted mb-3"></p>
+
+            <div class="callout">
+              <div class="callout-title">Drill Steps</div>
+              <ol id="modalSteps" class="mb-0 ps-3"></ol>
+            </div>
+
+            <div class="mt-3 small text-muted" id="modalTip"></div>
+          </div>
+
+          <div class="modal-footer">
+            <button id="modalFavBtn" type="button" class="btn btn-accent">
+              Save to Favorites
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+  </body>
+</html>
