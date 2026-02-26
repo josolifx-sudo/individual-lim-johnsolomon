@@ -1,0 +1,178 @@
+:root {
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --border: #e5e7eb;
+
+  --text: #0b0f19;
+  --muted: #5b6474;
+
+  --brand: #e1192d;      /* Fitness First red vibe */
+  --brand-dark: #b31222;
+
+  --success: #16a34a;
+  --danger: #dc2626;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Navbar */
+.navbar-glass {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: var(--text) !important;
+}
+
+.navbar .nav-link:hover {
+  color: var(--brand) !important;
+}
+
+/* Containers / Cards */
+.card-glass {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Headings + muted text */
+.small-muted {
+  color: var(--muted) !important;
+}
+
+/* Buttons */
+.btn-accent {
+  background: var(--brand);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 0.6rem 1rem;
+}
+
+.btn-accent:hover {
+  background: var(--brand-dark);
+}
+
+.btn-outline-dark {
+  border-radius: 12px;
+}
+
+/* Badges */
+.badge-soft {
+  background: rgba(225, 25, 45, 0.10);
+  color: var(--brand-dark);
+  border: 1px solid rgba(225, 25, 45, 0.20);
+  border-radius: 999px;
+}
+
+.badge-done {
+  background: rgba(22, 163, 74, 0.12);
+  color: #0f6a2c;
+  border: 1px solid rgba(22, 163, 74, 0.20);
+  border-radius: 999px;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: var(--text);
+  border-radius: 12px;
+}
+
+.form-control::placeholder {
+  color: #8a95a6;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(225, 25, 45, 0.55);
+  box-shadow: 0 0 0 0.15rem rgba(225, 25, 45, 0.18);
+}
+
+/* Progress */
+.progress {
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-bar {
+  background: var(--brand);
+}
+
+/* Modal */
+.modal-content {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--border);
+}
+
+/* Fitness First style hero */
+.hero-strip {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #111827;
+  border: 1px solid var(--border);
+}
+
+.hero-strip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.70) 0%,
+      rgba(0, 0, 0, 0.35) 55%,
+      rgba(0, 0, 0, 0.15) 100%
+    ),
+    var(--hero-img);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.05);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 3.2rem 2rem;
+  color: white;
+}
+
+.hero-kicker {
+  display: inline-block;
+  background: rgba(225, 25, 45, 0.95);
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.hero-title {
+  margin-top: 0.9rem;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.05;
+}
+
+.hero-subtitle {
+  margin-top: 0.75rem;
+  max-width: 48ch;
+  opacity: 0.95;
+}
