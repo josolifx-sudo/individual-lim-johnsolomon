@@ -176,3 +176,20 @@ body {
   max-width: 48ch;
   opacity: 0.95;
 }
+.btn-outline-dark {
+  border-color: #111827;
+  color: #111827;
+  font-weight: 600;
+}
+
+.btn-outline-dark:hover {
+  background: #111827;
+  color: #ffffff;
+}
+.modal-title {
+  color: var(--text);
+  font-weight: 800;
+}
+.btn-close {
+  opacity: 1;
+}
